@@ -1,30 +1,30 @@
-// 时间复杂度 n^3 猜测
-
+// 一、O(n^3) 暴力破解
 var longestPalindrome = function(s) {
     let i = 0, j = 0;
-    let maxstr = ''
+    let maxLength = 1;
+    let begin = 0;
     while (j < s.length || i < s.length) {
-        if (isHw(s.slice(i, j + 1)) && s.slice(i, j + 1).length >= maxstr.length) {
-            maxstr = s.slice(i, j + 1)
+        if ((j + 1 - i + 1) > maxLength && isHw(s, i, j + 1)) {
+            maxLength = j + 1 - i + 1
+            begin = i
         }
         if (j++ == s.length) {
             j = ++i;
         }
     }
-    return maxstr.length == 0 ? s[0] : maxstr
+    return maxLength == 1 ? s[0] : s.substring(begin, begin + maxLength)
  };
- 
- var isHw = function(stack) {
-    let is = true
-    let i = 0;
-    let j = stack.length - 1
-    while (i <= j) {
-        if (stack[i++] !== stack[j--]) return false
+ var isHw = function(str, begin, end) {
+    while (begin < end) {
+        if (str[begin++] !== str[end--]) return false
     }
-    return is
+    return true
  };
+ // test
  let str = 'babaabab'
- let start = new Date().getTime()
+//  let start = new Date().getTime()
+    console.time()
  console.log('结果', longestPalindrome(str))
- let end = new Date().getTime()
- console.log('所用时间', end - start)
+//  let end = new Date().getTime()
+//  console.log('所用时间', end - start)
+    console.timeEnd()
