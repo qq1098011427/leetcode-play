@@ -28,3 +28,31 @@ var longestPalindrome = function(s) {
 //  let end = new Date().getTime()
 //  console.log('所用时间', end - start)
     console.timeEnd()
+
+// 二、中心扩散 O(n^2)
+var longestPalindrome = function(s) {
+    let n = 0;
+    let maxLength = 0;
+    let begin = 0;
+    while (n < s.length) {
+        let oddLength = getHwLen(s, n, n)
+        let evenLength = getHwLen(s, n, n+1)
+        if (Math.max(oddLength, evenLength) > maxLength) {
+            maxLength = Math.max(oddLength, evenLength)
+            begin = n - Math.floor((maxLength - 1)/ 2)
+        }
+        n++;
+    }
+    return maxLength.length === 0 ? s[0] : s.substring(begin, begin + maxLength)
+};
+
+var getHwLen = function(s, left, right) {
+    while (left >= 0 && right < s.length) {
+        if (s[left--] !== s[right++]) {
+            left++;
+            right--;
+            break
+        }
+    }
+    return right - left - 1
+};
